@@ -23,11 +23,15 @@ app.use(function(req, res, next) {
     next();
 });
 
-/*
-app.get('/bookSearch', function(request, response) {
-    var queryData = url.parse(request.url, true).query;
+app.get('/allPeople', function(request, response) {
+    response.end(JSON.stringify(peopleList));
 });
-*/
+
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
+
+var peopleList = [];
+//bookList.push(book);
 
 // POST method route
 app.post('/findMatch', function (request, response) {
@@ -38,16 +42,22 @@ app.post('/findMatch', function (request, response) {
     request.on('end', function () {
         
         var parsedResponse = body.split('&');
-        var jobLocation = parsedResponse[0].split('=')[1];
-        var jobSummary = decodeURIComponent(parsedResponse[1].substring(parsedResponse[1].indexOf('=') + 1));
-        
+        var name = parsedResponse[0].split('=')[1];
+        var jobLocation = parsedResponse[1].split('=')[1];
+        var jobSummary = decodeURIComponent(parsedResponse[2].substring(parsedResponse[2].indexOf('=') + 1));
+        var search = parsedResponse[3].split('=')[1];
+
+        console.log("NAME : " + name);
         console.log("JOB LOCATION : " + jobLocation);
         console.log("JOB SUMMARY : " + jobSummary);
+        console.log("SEARCH : " + search);
 
         // persist data to memory (need user ID!)
+        var person = {name:name,summary:jobSummary};
+        peopleList.push(person);
 
         // matching engine here
-        var search = "Agile";
+        //var search = "Agile";
         var match;
         if(jobSummary.indexOf(search) > -1) {
             match = "found a match on " + search;
@@ -55,8 +65,17 @@ app.post('/findMatch', function (request, response) {
             match = "sorry, no match found";
         }
 
+        var newMatch;
+        for (index = 0; index < peopleList.length; ++index) {
+            console.log(peopleList[index]);
+
+            if(peopleList[index].summary.indexOf(search) > -1) {
+                newMatch = "found a match on " + search + " for " + peopleList[index].name;
+            }
+        }
+
         response.writeHead(200, {'Content-Type': 'text/html'});
-        response.end('post acknowledged. match?' + match);
+        response.end('post acknowledged. match?' + newMatch);
     });
     //response.send('POST request to the homepage');
 });
