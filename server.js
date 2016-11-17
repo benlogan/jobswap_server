@@ -70,12 +70,12 @@ app.post('/findMatch', function (request, response) {
             console.log(peopleList[index]);
 
             if(peopleList[index].summary.indexOf(search) > -1) {
-                newMatch = "found a match on " + search + " for " + peopleList[index].name;
+                newMatch += "Matched " + search + " for " + peopleList[index].name;
             }
         }
 
         response.writeHead(200, {'Content-Type': 'text/html'});
-        response.end('post acknowledged. match?' + newMatch);
+        response.end('Match? ' + newMatch);
     });
     //response.send('POST request to the homepage');
 });
