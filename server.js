@@ -31,7 +31,6 @@ const NodeCache = require( "node-cache" );
 const myCache = new NodeCache();
 
 var peopleList = [];
-//bookList.push(book);
 
 // POST method route
 app.post('/findMatch', function (request, response) {
@@ -54,7 +53,10 @@ app.post('/findMatch', function (request, response) {
 
         // persist data to memory (need user ID!)
         var person = {name:name,summary:jobSummary};
-        peopleList.push(person);
+        //peopleList.push(person);
+        peopleList[name] = jobSummary;
+
+        //myCache.set(name, jobSummary);
 
         // matching engine here
         //var search = "Agile";
@@ -66,11 +68,22 @@ app.post('/findMatch', function (request, response) {
         }
 
         var newMatch = "";
+
+        /*
         for (index = 0; index < peopleList.length; ++index) {
             console.log(peopleList[index]);
 
             if(peopleList[index].summary.indexOf(search) > -1) {
                 newMatch += " Matched " + search + " for " + peopleList[index].name;
+            }
+        }
+        */
+
+        for (var key in peopleList) {
+            console.log("key " + key + " has value " + peopleList[key]);
+
+            if(peopleList[key].indexOf(search) > -1) {
+                newMatch += " Matched " + search + " for " + key;
             }
         }
 
