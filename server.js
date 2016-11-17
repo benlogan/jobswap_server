@@ -65,7 +65,7 @@ app.post('/findMatch', function (request, response) {
             match = "sorry, no match found";
         }
 
-        var newMatch;
+        var newMatch = "";
         for (index = 0; index < peopleList.length; ++index) {
             console.log(peopleList[index]);
 
