@@ -49,7 +49,7 @@ app.post('/findMatch', function (request, response) {
         // matching engine here
         var search = "Agile";
         var match;
-        if(jobSummary.includes(search)) {
+        if(jobSummary.indexOf(search) > -1) {
             match = "found a match on " + search;
         } else {
             match = "sorry, no match found";
