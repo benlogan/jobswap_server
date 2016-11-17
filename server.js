@@ -70,7 +70,7 @@ app.post('/findMatch', function (request, response) {
             console.log(peopleList[index]);
 
             if(peopleList[index].summary.indexOf(search) > -1) {
-                newMatch += "Matched " + search + " for " + peopleList[index].name;
+                newMatch += " Matched " + search + " for " + peopleList[index].name;
             }
         }
 
